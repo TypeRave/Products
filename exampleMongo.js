@@ -2,16 +2,6 @@ const mongoose = require('mongoose');
 
 
 
-const stylesSchema = new mongoose.Schema({
-  default: Boolean,
-  original_price: Number,
-  sale_price: Number,
-  sku: [String:{size:String, quantity: Number}],
-  photos: [{thumbnail: String, url: String}]
-});
-
-
-
 const overviewSchema = new mongoose.Schema({
   product_id: Number,
   product_name: String,
@@ -31,14 +21,23 @@ const styleSchema = new mongoose.Schema({
     original_price: String,
     sale_price: String,
     default?: Boolean,
-    photos: [{thumbnail: String, url: String}]}],
-    sku: [ String: {
-        size:String,
+    photos: [{thumbnail_url: String, url: String}]}],
+    skus: [{sku: String,
+      type: Object,
+      default: {
+        size: String,
         quantity: Number
-      }]
+      }}]
 });
+// using array for the sku since there is more than one sku present
 
-const relatedProduct = new mongoose.Schema({
+const relatedProductSchema = new mongoose.Schema({
   product_id: Number,
   related_products: [Number]
-})
+});
+
+
+const RelatedProduct = mongoose.model('RelatedProduct', relatedProductSchema);
+const Styles = mongoose.model('Styles', styleSchema);
+const Overview = mongoose.model('Overview', overviewSchema);
+
