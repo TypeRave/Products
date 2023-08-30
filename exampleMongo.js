@@ -12,14 +12,33 @@ const stylesSchema = new mongoose.Schema({
 
 
 
-const productSchema = new mongoose.Schema({
+const overviewSchema = new mongoose.Schema({
   product_id: Number,
   product_name: String,
   slogan: String,
   category: String,
   price: Number,
   description: String,
-  styles: [{type: Schema.ObjectID, ref: 'Styles'}],
-  related_products: [Number],
   features: [{feature: String, value: String}]
+});
+
+const styleSchema = new mongoose.Schema({
+
+  product_id: Number,
+  results: [{
+    style_id: Number,
+    name: String,
+    original_price: String,
+    sale_price: String,
+    default?: Boolean,
+    photos: [{thumbnail: String, url: String}]}],
+    sku: [ String: {
+        size:String,
+        quantity: Number
+      }]
+});
+
+const relatedProduct = new mongoose.Schema({
+  product_id: Number,
+  related_products: [Number]
 })
