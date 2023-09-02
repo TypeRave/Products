@@ -1,47 +1,87 @@
-Create database products;
+-- Create database products;
 
 
-
+\c products
 
 --if query for all products, will return entire overview table
+--using small int for data type of prices since prices appear to be whole numbers
 CREATE TABLE IF NOT EXISTS overview (
-  id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
   name VARCHAR(50),
-  category VARCHAR(20),
-  slogan VARCHAR(100),
-  default_price SMALLINT, --using small int for data type of prices since prices appear to be whole numbers
-  description VARCHAR(100)
+  category VARCHAR(500),
+  slogan VARCHAR(1000),
+  default_price INTEGER,
+  description VARCHAR(1000)
 );
+
+CREATE TABLE IF NOT EXISTS relatedProducts (
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  current_product_id INTEGER REFERENCES overview(id),
+  related_product_id INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS features (
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  product_id INTEGER REFERENCES overview(id),
+  feature VARCHAR (500),
+  value VARCHAR (500)
+);
+
 CREATE TABLE IF NOT EXISTS styles (
-  id SERIAL PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY (product_id) REFERENCES overview(id),
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  product_id INTEGER REFERENCES overview(id),
   name VARCHAR(50),
-  image_id INTEGER FOREIGN KEY (image_id) REFERENCES images(id),
-  sale_price SMALLINT,
-  original_price SMALLINT,
+  sale_price INTEGER,
+  original_price INTEGER,
   isDefault BOOLEAN
 );
+
 CREATE TABLE IF NOT EXISTS skus ( -- will be repeated multiple times throughout all products
-  id SERIAL PRIMARY KEY,
-  style_id INTEGER FOREIGN KEY(style_id) REFERENCES styles(id)
-  sku VARCHAR (5),
-  size VARCHAR (5),
-  quantity SMALLINT
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  style_id INTEGER REFERENCES styles(id),
+  size VARCHAR (50),
+  quantity INTEGER
 );
-CREATE TABLE IF NOT EXISTS images ( --allows me to create join table
-  id SERIAL PRIMARY KEY,
-  style_id INTEGER FOREIGN KEY (style_id) REFERENCES styles(id),
-  thumbnail_url VARCHAR(2083), --this is limit of chrome browser so no url can exceed
-  url VARCHAR(2083),
+
+CREATE TABLE IF NOT EXISTS images (
+  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  style_id INTEGER REFERENCES styles(id),
+  thumbnail_url TEXT,
+  url TEXT
 );
-CREATE TABLE IF NOT EXISTS features (
-  id SERIAL PRIMARY KEY,
-  product_id FOREIGN KEY(product_id) REFERENCES overview(id),
-  feature VARCHAR (50),
-  value VARCHAR (50)
-);
-CREATE TABLE IF NOT EXISTS relatedProducts ( --kept since making a query for related products returns an array of product ids This makes it easier
-  id SERIAL PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY(product_id) REFERENCES overview(id),
-  related_product INTEGER FOREIGN KEY(related_products) REFERENCES overview(id)
-)
+
+
+
+-- COPY overview(id, name, slogan, description, category, default_price)
+-- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/product.csv'
+-- DELIMITER ','
+-- CSV HEADER;
+
+-- COPY relatedProducts(id, current_product_id, related_product_id)
+-- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/related.csv'
+-- DELIMITER ','
+-- CSV HEADER;
+
+-- COPY features (id, product_id, feature, value)
+-- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/features.csv'
+-- DELIMITER ','
+-- CSV HEADER;
+
+COPY styles(id, product_id, name, sale_price, original_price, isDefault)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/styles.csv'
+DELIMITER ','
+CSV NULL'null';
+
+
+
+COPY skus(id, style_id, size, quantity)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/skus.csv'
+DELIMITER ','
+CSV HEADER;
+
+
+COPY images(id, style_id, thumbnail_url, url)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/photos.csv'
+DELIMITER ','
+CSV HEADER;
+
