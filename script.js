@@ -7,28 +7,26 @@ export const options = {
   duration: '30s',
 };
 
-// export default function () { //obtain list of different products
-//   let count = Math.floor(Math.random() * 15);
-//   let page = Math.floor(Math.random() * 100);
+export default function () { //obtain list of different products
+  let count = Math.floor(Math.random(6));
+  let page = Math.floor(Math.random(10) );
 
-//   // let count = 5;
-//   // let page = 1;
 
-//   const localURL = `http://localhost:3000/data/products?page=${page}&count=${count}`
-//   http.get(localURL);
-//   sleep(1);
-// }
-
-export default function () { //for feature of specific product
-  const max = 1000011;
-  const min = 900000;
-  const product_id = Math.floor(Math.random() * (max - min) + min);
-
-  const localURL = `http://localhost:3000/data/products/${product_id}`
+  const localURL = `http://localhost:3000/data/products?page=${page}&count=${count}`
   http.get(localURL);
-
   sleep(1);
 }
+
+// export default function () { //for feature of specific product
+//   const max = 1000011;
+//   const min = 900000;
+//   const product_id = Math.floor(Math.random() * (max - min) + min);
+
+//   const localURL = `http://localhost:3000/data/products/${product_id}`
+//   http.get(localURL);
+
+//   sleep(1);
+// }
 
 
 // export default function () { //for styles of individual product
