@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS skus ( -- will be repeated multiple times throughout 
 );
 
 CREATE TABLE IF NOT EXISTS images (
-  id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+  sku_id SERIAL PRIMARY KEY NOT NULL UNIQUE,
   style_id INTEGER REFERENCES styles(id),
   thumbnail_url TEXT,
   url TEXT
@@ -52,20 +52,20 @@ CREATE TABLE IF NOT EXISTS images (
 
 
 
--- COPY overview(id, name, slogan, description, category, default_price)
--- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/product.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY overview(id, name, slogan, description, category, default_price)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/product.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY relatedProducts(id, current_product_id, related_product_id)
--- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/related.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY relatedProducts(id, current_product_id, related_product_id)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/related.csv'
+DELIMITER ','
+CSV HEADER;
 
--- COPY features (id, product_id, feature, value)
--- FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/features.csv'
--- DELIMITER ','
--- CSV HEADER;
+COPY features (id, product_id, feature, value)
+FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/features.csv'
+DELIMITER ','
+CSV HEADER;
 
 COPY styles(id, product_id, name, sale_price, original_price, isDefault)
 FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/styles.csv'
@@ -74,7 +74,7 @@ CSV NULL'null';
 
 
 
-COPY skus(id, style_id, size, quantity)
+COPY skus(sku_id, style_id, size, quantity)
 FROM '/home/frankasoto/hackreactor/TypeRave/Products/data/skus.csv'
 DELIMITER ','
 CSV HEADER;
