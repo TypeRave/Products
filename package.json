@@ -29,6 +29,7 @@
     "node": "^20.5.1",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
-    "pg-copy-streams": "^6.0.6"
+    "pg-copy-streams": "^6.0.6",
+    "terser": "^5.19.4"
   }
 }
