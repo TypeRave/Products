@@ -1,6 +1,6 @@
-const {Client, Pool} = require('pg');
+const { Client, Pool } = require('pg');
 require('dotenv').config();
-
+const { minify } = require('terser');
 const client = new Pool({
   host: process.env.PG_HOST,
   user: process.env.PG_USER,
@@ -79,7 +79,7 @@ const getProductInfo = (req, res) => {
 
 
 
-const getProductStyles = (req, res) => {
+const getProductStyles = async (req, res) => {
 
   let stylesObj = {
     product_id: req.params.product_id,
